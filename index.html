@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion et Inscription</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .container h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #004080;
+        }
+
+        .container button {
+            padding: 15px 30px;
+            margin: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #004080;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .container button:hover {
+            background-color: #003366;
+        }
+
+        .auth-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            display: none;
+        }
+
+        .auth-container h2 {
+            margin-bottom: 20px;
+            color: #004080;
+        }
+
+        .auth-container input, .auth-container select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .auth-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #004080;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .auth-container button:hover {
+            background-color: #003366;
+        }
+
+        .auth-container .error {
+            color: red;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .switch-form {
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .switch-form a {
+            color: #004080;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .switch-form a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="homePage">
+        <h1>Bienvenue</h1>
+        <button onclick="showLogin('user')">Connexion Utilisateur</button>
+        <button onclick="showLogin('employee')">Connexion Employé</button>
+        <button onclick="showRegister('user')">Créer un compte Utilisateur</button>
+        <button onclick="showRegister('employee')">Créer un compte Employé</button>
+    </div>
+
+    <div class="auth-container" id="userLogin">
+        <h2>Connexion Utilisateur</h2>
+        <form id="userLoginForm">
+            <input type="email" id="userEmail" placeholder="Adresse e-mail" required>
+            <input type="password" id="userPassword" placeholder="Mot de passe" required>
+            <button type="submit">Se connecter</button>
+        </form>
+        <p class="error" id="userLoginError">Adresse e-mail ou mot de passe incorrect.</p>
+        <p class="switch-form">Pas de compte ? <a href="#" onclick="showRegister('user')">Créer un compte</a></p>
+        <button onclick="showHome()">Retour</button>
+    </div>
+
+    <div class="auth-container" id="employeeLogin">
+        <h2>Connexion Employé</h2>
+        <form id="employeeLoginForm">
+            <input type="email" id="employeeEmail" placeholder="Adresse e-mail" required>
+            <input type="password" id="employeePassword" placeholder="Mot de passe" required>
+            <button type="submit">Se connecter</button>
+        </form>
+        <p class="error" id="employeeLoginError">Adresse e-mail ou mot de passe incorrect.</p>
+        <p class="switch-form">Pas de compte ? <a href="#" onclick="showRegister('employee')">Créer un compte</a></p>
+        <button onclick="showHome()">Retour</button>
+    </div>
+
+    <div class="auth-container" id="userRegister">
+        <h2>Créer un compte Utilisateur</h2>
+        <form id="userRegisterForm">
+            <input type="text" id="userName" placeholder="Nom complet" required>
+            <input type="email" id="userRegisterEmail" placeholder="Adresse e-mail" required>
+            <input type="password" id="userRegisterPassword" placeholder="Mot de passe" required>
+            <button type="submit">Créer un compte</button>
+        </form>
+        <p class="error" id="userRegisterError"></p>
+        <p class="switch-form">Déjà un compte ? <a href="#" onclick="showLogin('user')">Se connecter</a></p>
+        <button onclick="showHome()">Retour</button>
+    </div>
+
+    <div class="auth-container" id="employeeRegister">
+        <h2>Créer un compte Employé</h2>
+        <form id="employeeRegisterForm">
+            <input type="text" id="employeeName" placeholder="Nom complet" required>
+            <input type="email" id="employeeRegisterEmail" placeholder="Adresse e-mail" required>
+            <input type="password" id="employeeRegisterPassword" placeholder="Mot de passe" required>
+            <input type="password" id="employeeSecret" placeholder="Mot de passe secret" required>
+            <select id="employeeRole">
+                <option value="admin">Admin</option>
+                <option value="modo">Modérateur</option>
+                <option value="influenceur">Influenceur</option>
+                <option value="employé">Employé</option>
+                <option value="étudiant">Étudiant</option>
+            </select>
+            <button type="submit">Créer un compte</button>
+        </form>
+        <p class="error" id="employeeRegisterError"></p>
+        <p class="switch-form">Déjà un compte ? <a href="#" onclick="showLogin('employee')">Se connecter</a></p>
+        <button onclick="showHome()">Retour</button>
+    </div>
+
+    <script>
+        function showHome() {
+            document.getElementById('homePage').style.display = 'block';
+            document.getElementById('userLogin').style.display = 'none';
+            document.getElementById('employeeLogin').style.display = 'none';
+            document.getElementById('userRegister').style.display = 'none';
+            document.getElementById('employeeRegister').style.display = 'none';
+        }
+
+        function showLogin(type) {
+            document.getElementById('homePage').style.display = 'none';
+            if (type === 'user') {
+                document.getElementById('userLogin').style.display = 'block';
+            } else if (type === 'employee') {
+                document.getElementById('employeeLogin').style.display = 'block';
+            }
+        }
+
+        function showRegister(type) {
+            document.getElementById('homePage').style.display = 'none';
+            if (type === 'user') {
+                document.getElementById('userRegister').style.display = 'block';
+            } else if (type === 'employee') {
+                document.getElementById('employeeRegister').style.display = 'block';
+            }
+        }
+
+        document.getElementById('userLoginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('userEmail').value;
+            const password = document.getElementById('userPassword').value;
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.email === email && u.password === password);
+            if (user) {
+                localStorage.setItem('role', 'user');
+                window.location.href = "espace-utilisateur.html";
+            } else {
+                document.getElementById('userLoginError').style.display = 'block';
+            }
+        });
+
+        document.getElementById('employeeLoginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('employeeEmail').value;
+            const password = document.getElementById('employeePassword').value;
+            const employees = JSON.parse(localStorage.getItem('employees')) || [];
+            const employee = employees.find(e => e.email === email && e.password === password);
+            if (employee) {
+                localStorage.setItem('role', employee.role);
+                window.location.href = "espace-admin.html";
+            } else {
+                document.getElementById('employeeLoginError').style.display = 'block';
+            }
+        });
+
+        document.getElementById('userRegisterForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userRegisterEmail').value;
+            const password = document.getElementById('userRegisterPassword').value;
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            if (users.some(u => u.email === email)) {
+                document.getElementById('userRegisterError').textContent = "Cet email est déjà utilisé.";
+                document.getElementById('userRegisterError').style.display = 'block';
+                return;
+            }
+            users.push({ name, email, password });
+            localStorage.setItem('users', JSON.stringify(users));
+            alert("Compte utilisateur créé avec succès !");
+            showLogin('user');
+        });
+
+        document.getElementById('employeeRegisterForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('employeeName').value;
+            const email = document.getElementById('employeeRegisterEmail').value;
+            const password = document.getElementById('employeeRegisterPassword').value;
+            const secret = document.getElementById('employeeSecret').value;
+            const role = document.getElementById('employeeRole').value;
+            if (secret !== "cacahuète") {
+                document.getElementById('employeeRegisterError').textContent = "Mot de passe secret incorrect.";
+                document.getElementById('employeeRegisterError').style.display = 'block';
+                return;
+            }
+            const employees = JSON.parse(localStorage.getItem('employees')) || [];
+            if (employees.some(e => e.email === email)) {
+                document.getElementById('employeeRegisterError').textContent = "Cet email est déjà utilisé.";
+                document.getElementById('employeeRegisterError').style.display = 'block';
+                return;
+            }
+            employees.push({ name, email, password, role });
+            localStorage.setItem('employees', JSON.stringify(employees));
+            alert("Compte employé créé avec succès !");
+            showLogin('employee');
+        });
+    </script>
+</body>
+</html>
